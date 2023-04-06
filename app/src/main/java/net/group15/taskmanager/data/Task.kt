@@ -1,12 +1,13 @@
-package net.group15.taskmanager
+package net.group15.taskmanager.data
 
 import java.util.Date
 
 /**
- * A Constructor for the tasks.
- * Fill out the parameters to create a new task
+ * A Constructor for tasks.
+ * Author: Leland Carter
  * Can be left null if user doesn't fill out
  */
+
 class Task private constructor(
     val name: String?,
     val description: String?,
@@ -27,10 +28,5 @@ class Task private constructor(
 
         // Build and set the parameters to this task
         fun build() = Task(name, description, tags, timeOfTask)
-    }
-
-    // TODO: Save task data on local storage
-    class SaveLocally() {
-
     }
 }

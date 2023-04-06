@@ -1,6 +1,9 @@
-package net.group15.taskmanager
+package net.group15.taskmanager.data
 
-import java.util.*
+/**
+ * A Constructor for user tags & categories.
+ * Author: Leland Carter
+ */
 
 //A category for the tag so tasks can be sorted and viewed by the similarity
 enum class Category(val value: Int) {
@@ -21,10 +24,5 @@ class UserTags private constructor(
 
         // Build and set the parameters to this task
         fun build() = UserTags(name, category)
-    }
-
-    // TODO: Save tag data on local storage
-    class SaveLocally() {
-
     }
 }

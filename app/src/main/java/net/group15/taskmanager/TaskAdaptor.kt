@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import net.group15.taskmanager.data.Task
 
 class NoteAdapter : BaseAdapter {
     lateinit var dataList: MutableList<Task>
