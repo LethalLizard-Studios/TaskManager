@@ -80,9 +80,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/Submit"
-            android:layout_width="102dp"
-            android:layout_height="53dp"
+            android:id="@+id/submit"
+            android:layout_width="97dp"
+            android:layout_height="47dp"
             app:icon="@drawable/baseline_add_task_24"
             app:iconGravity="top"
             app:layout_constraintBottom_toBottomOf="parent"
