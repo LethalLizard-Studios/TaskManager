@@ -26,8 +26,7 @@ object SharedPrefs : AppCompatActivity() {
         this.dataStoreManager = dataStoreManager
         this.owner = owner
 
-        // Load on startup
-        updateTaskList()
+        loadData()
     }
 
     fun add(task: Task) {
@@ -48,11 +47,7 @@ object SharedPrefs : AppCompatActivity() {
     // Fully clears all tasks and saved data, factory reset
     fun reset() {
         viewModel.storeTasks("")
-        updateTaskList()
-    }
-
-    fun updateTaskList() {
-        taskList = loadData()
+        taskList.clear()
     }
 
     // Saves the users data locally
@@ -63,30 +58,21 @@ object SharedPrefs : AppCompatActivity() {
 
         viewModel.storeTasks(json)
 
-        println(json.toString())
+        println("Saving: $json")
     }
 
-    // Loads the users local data and returns it
-    private fun loadData() : MutableList<Task> {
-        var finalList = mutableListOf<Task>()
-
+    // Loads the users local data, only needs to be called at launch
+    private fun loadData() {
         viewModel.retrieveTasks.observe(owner){tasks ->
             val gson = Gson()
-
-            println(tasks.toString())
 
             val listType = object: TypeToken<MutableList<Task>>() {
             }.type
 
-            if (tasks.isNotEmpty()) {
-                finalList = gson.fromJson(tasks, listType)
-                println("retrieved!")
+            if (tasks.isNotEmpty() && taskList.isEmpty()) {
+                println("Loading: $tasks")
+                taskList = gson.fromJson(tasks, listType)
             }
         }
-
-        println("init: "+taskList.size.toString())
-        println("loaded:"+finalList.size.toString())
-
-        return finalList
     }
 }
