@@ -94,6 +94,20 @@
             app:layout_constraintVertical_bias="0.0"
             tools:ignore="HardcodedText,TextSizeCheck" />
 
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="215dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="158dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="158dp"
+            android:layout_marginBottom="120dp"
+            android:text="Reset User Data"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -47,12 +48,35 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation("androidx.cardview:cardview:1.0.0")
 
-    /* Google Gson Lib for saving preferences in objects.SharedPreferences
+    /* Google Gson Lib for saving preferences in objects/SharedPrefs.kt
     * Accessed: 4/2/2023, Added By: Leland Carter
     * Credit: Nathan Sebhastian, https://sebhastian.com/gson-kotlin/ used for implementation */
     implementation 'com.google.code.gson:gson:2.8.9'
 
+    /* Used to save data locally on the device in objects/SharedPrefs.kt
+    * Accessed: 4/7/2023, Added By: Leland Carter
+    * Credit: Android Geek, https://www.youtube.com/watch?v=RQKP7TtiOrU used for implementation */
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-firestore'
+
+    implementation "androidx.fragment:fragment-ktx:1.5.4"
+    implementation 'androidx.activity:activity-ktx:1.5.0'
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
