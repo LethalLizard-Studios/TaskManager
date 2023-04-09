@@ -14,7 +14,7 @@ import net.group15.taskmanager.datastore.MainViewModel
  */
 
 object SharedPrefs : AppCompatActivity() {
-    private var taskList = mutableListOf<Task>()
+    var taskList = mutableListOf<Task>()
 
     private lateinit var viewModel: MainViewModel
     private lateinit var dataStoreManager: DataStoreManager
