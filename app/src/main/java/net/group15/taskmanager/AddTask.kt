@@ -25,14 +25,12 @@ class AddTask : Fragment() {
     private var _binding: FragmentAddTaskBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
         _binding =  FragmentAddTaskBinding.inflate(inflater, container, false)
-
 
         binding.setStartingTime.setOnClickListener{
             openTimePickerForStartingTime()
@@ -47,8 +45,8 @@ class AddTask : Fragment() {
             val endingTimeText = binding.endTime.text.toString()
             val titleText = binding.titleOfTaskInput.text.toString()
             val titleInfo = binding.taskInfoText.text.toString()
-            var addTaskInfo: Boolean = false
-            var addTaskTime: Boolean = false
+            var addTaskInfo = false
+            var addTaskTime = false
 
 
             println("$startingTimeText  $endingTimeText $titleText $titleInfo")
@@ -91,7 +89,7 @@ class AddTask : Fragment() {
                         .build()
 
                     // Add the built task to our singleton's list
-                    SharedPrefs.add(task);
+                    SharedPrefs.add(task)
 
                     val snackbar = Snackbar.make(binding.root, "Task has been added", Snackbar.LENGTH_SHORT)
                     snackbar.show()

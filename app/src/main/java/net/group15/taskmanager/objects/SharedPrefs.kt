@@ -1,10 +1,12 @@
 package net.group15.taskmanager.objects
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import net.group15.taskmanager.data.Task
+import net.group15.taskmanager.datastore.DataStoreManager
+import net.group15.taskmanager.datastore.MainViewModel
 
 /**
  * Singleton object used to save and load task data locally.
@@ -12,48 +14,79 @@ import net.group15.taskmanager.data.Task
  */
 
 object SharedPrefs : AppCompatActivity() {
+    private var taskList = mutableListOf<Task>()
 
-    val taskList = mutableListOf<Task>()
+    private lateinit var viewModel: MainViewModel
+    private lateinit var dataStoreManager: DataStoreManager
+    private lateinit var owner: LifecycleOwner
+
+    fun initialize(viewModel: MainViewModel, dataStoreManager: DataStoreManager,
+                   owner: LifecycleOwner) {
+        this.viewModel = viewModel
+        this.dataStoreManager = dataStoreManager
+        this.owner = owner
+
+        // Load on startup
+        updateTaskList()
+    }
 
     fun add(task: Task) {
         taskList.add(task)
         saveData()
     }
 
-    // Saves the users data locally
-    fun saveData() {
-        //val sharedPreferences = getSharedPreferences("local preferences", Context.MODE_PRIVATE)
-        //val sharedEdit = preferences.edit()
+    fun remove(index: Int) {
+        taskList.removeAt(index)
+        saveData()
+    }
 
+    fun remove(task: Task) {
+        taskList.remove(task)
+        saveData()
+    }
+
+    // Fully clears all tasks and saved data, factory reset
+    fun reset() {
+        viewModel.storeTasks("")
+        updateTaskList()
+    }
+
+    fun updateTaskList() {
+        taskList = loadData()
+    }
+
+    // Saves the users data locally
+    private fun saveData() {
         // Uses Gson to convert our list into Json
         val gson = Gson()
         val json = gson.toJson(taskList)
 
+        viewModel.storeTasks(json)
+
         println(json.toString())
-
-        //sharedEdit.putString("tasks", json)
-
-        //sharedEdit.apply()
     }
 
     // Loads the users local data and returns it
-    fun loadData() : MutableList<Task> {
-        val sharedPreferences = getSharedPreferences("local preferences", Context.MODE_PRIVATE)
+    private fun loadData() : MutableList<Task> {
+        var finalList = mutableListOf<Task>()
 
-        val gson = Gson()
-        val json = sharedPreferences.getString("tasks", "")
+        viewModel.retrieveTasks.observe(owner){tasks ->
+            val gson = Gson()
 
-        // Converts the JSON back into the Task data
-        val data = Gson().fromJson(json, Task::class.java)
+            println(tasks.toString())
 
-        println(data.toString())
+            val listType = object: TypeToken<MutableList<Task>>() {
+            }.type
 
-        val list = object: TypeToken<MutableList<Task>>() {
-        }.type
+            if (tasks.isNotEmpty()) {
+                finalList = gson.fromJson(tasks, listType)
+                println("retrieved!")
+            }
+        }
 
-        return gson.fromJson(json, list)
+        println("init: "+taskList.size.toString())
+        println("loaded:"+finalList.size.toString())
 
-        // DOES NOT RETURN SAVED DATA YET!
-        //return mutableListOf<Task>()
+        return finalList
     }
 }
