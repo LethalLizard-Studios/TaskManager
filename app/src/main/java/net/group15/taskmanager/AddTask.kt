@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar
 import net.group15.taskmanager.databinding.FragmentAddTaskBinding
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import net.group15.taskmanager.data.Task
+import net.group15.taskmanager.objects.SharedPrefs
 import java.util.*
 
 
@@ -80,10 +82,17 @@ class AddTask : Fragment() {
                 }
 
                 if (addTaskInfo && addTaskTime){
-                    /*
-                        Who ever is doing the backend this is how I am sending the data
-                        Change this to send the data to the backend and grab in the addTask
-                     */
+                    // Create a new task with the entered data
+                    val task = Task.Builder()
+                        .name(titleText)
+                        .description(titleInfo)
+                        .startTime(timeStart)
+                        .endTime(timeEnd)
+                        .build()
+
+                    // Add the built task to our singleton's list
+                    SharedPrefs.add(task);
+
                     val snackbar = Snackbar.make(binding.root, "Task has been added", Snackbar.LENGTH_SHORT)
                     snackbar.show()
                     parentFragmentManager.beginTransaction().replace(R.id.frame_layout, Home()).commit()

@@ -13,22 +13,27 @@ import net.group15.taskmanager.data.Task
 
 object SharedPrefs : AppCompatActivity() {
 
+    val taskList = mutableListOf<Task>()
+
+    fun add(task: Task) {
+        taskList.add(task)
+        saveData()
+    }
+
     // Saves the users data locally
-    fun saveData(data: MutableList<Task>) {
+    fun saveData() {
         //val sharedPreferences = getSharedPreferences("local preferences", Context.MODE_PRIVATE)
         //val sharedEdit = preferences.edit()
 
         // Uses Gson to convert our list into Json
         val gson = Gson()
-        val json = gson.toJson(data)
+        val json = gson.toJson(taskList)
 
         println(json.toString())
 
         //sharedEdit.putString("tasks", json)
 
         //sharedEdit.apply()
-
-        System.out.println(json.toString())
     }
 
     // Loads the users local data and returns it
