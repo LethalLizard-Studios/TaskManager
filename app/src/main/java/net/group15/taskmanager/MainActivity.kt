@@ -40,15 +40,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-// add a task (save for the day)
-// task title (string)
-// task start time (hour)
-// task estimated time to complete (hour)
-
-
-// add a goal screen (save for the time defined)
-// goal title
-// goal start time (hour)
-// goal estimated time to complete (hour)
-// goal duration (weeks)

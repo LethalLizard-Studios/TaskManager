@@ -7,7 +7,7 @@ package net.group15.taskmanager.data
 
 //A category for the tag so tasks can be sorted and viewed by the similarity
 enum class Category(val value: Int) {
-    NONE(0), SCHOOLWORK(1), HOUSEWORK(2), JOB(3), FITNESS(4),
+    ALL(0), SCHOOL(1), HOUSEWORK(2), JOB(3), FITNESS(4), SHOPPING(5)
 }
 
 class UserTags private constructor(
