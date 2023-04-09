@@ -59,7 +59,7 @@ object SharedPrefs : AppCompatActivity() {
 
         viewModel.storeTasks(json)
 
-        println("Saving: $json")
+        println("Saving ${taskList.size}: $json")
     }
 
     // Loads the users local data, only needs to be called at launch
@@ -71,8 +71,8 @@ object SharedPrefs : AppCompatActivity() {
             }.type
 
             if (tasks.isNotEmpty() && taskList.isEmpty()) {
-                println("Loading: $tasks")
                 taskList = gson.fromJson(tasks, listType)
+                println("Loading ${taskList.size}: $tasks")
             }
         }
     }

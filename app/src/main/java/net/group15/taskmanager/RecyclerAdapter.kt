@@ -59,5 +59,4 @@ class RecyclerAdapter(
     private fun View.layoutLayoutInflater(): LayoutInflater {
         return LayoutInflater.from(this.context);
     }
-
 }
