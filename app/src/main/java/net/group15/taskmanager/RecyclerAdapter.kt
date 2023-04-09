@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import net.group15.taskmanager.data.Task
 import net.group15.taskmanager.databinding.AdapterTaskListBinding
 import net.group15.taskmanager.datastore.MainViewModel
+import net.group15.taskmanager.objects.SharedPrefs
 import java.util.*
 
 class RecyclerAdapter(
@@ -35,11 +36,13 @@ class RecyclerAdapter(
             tvEnd.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(task.endingTime)
             tvDescription.text = task.description
             tvDel.setOnClickListener {
-                viewModel.deleteTask(task)
+                // TODO: Does not remove until page refresh
+                SharedPrefs.remove(task)
             }
-            root.setOnClickListener {
+            // TODO: Add back change live date
+            /*root.setOnClickListener {
                 viewModel.changeLiveDate.value = task;
-            }
+            }*/
         }
 
     }

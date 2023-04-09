@@ -19,6 +19,7 @@ class Task private constructor(
     val startingTime: Date?,
     @SerializedName("ending_time")
     val endingTime: Date?):java.io.Serializable {
+
     constructor():this(null,null,null,null,null,null)
     data class Builder(
         var id: String? = null,

@@ -12,10 +12,6 @@ class AboutUs : Fragment() {
     private var _binding: FragmentAboutUsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,7 +20,7 @@ class AboutUs : Fragment() {
         _binding =  FragmentAboutUsBinding.inflate(inflater, container, false)
 
         binding.clear.setOnClickListener{
-//            SharedPrefs.reset()
+            SharedPrefs.reset()
         }
 
         return binding.root

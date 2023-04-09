@@ -4,7 +4,6 @@
 
 
 package net.group15.taskmanager
-
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.icu.text.SimpleDateFormat
@@ -13,13 +12,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import com.google.android.material.snackbar.Snackbar
 import net.group15.taskmanager.databinding.FragmentAddTaskBinding
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import net.group15.taskmanager.data.Task
-import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
 import java.util.*
 
@@ -27,43 +24,34 @@ import java.util.*
 class AddTask : Fragment() {
     private var _binding: FragmentAddTaskBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by activityViewModels<MainViewModel>()
-    private var id = ""
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
-        arguments?.let { it ->
-            val task: Task? = it.getSerializable("task")  as Task?
-            task?.let {obj->
-                id = obj.id!!
-                binding.setStartingTime.text =SimpleDateFormat("hh:mm a", Locale.getDefault()).format(obj.startingTime)
-                binding.endTime.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(obj.endingTime)
-                binding.titleOfTaskInput.setText(obj.name.toString())
-                binding.taskInfoText.setText(obj.description)
-            }
-          ""
-        }
-        binding.setStartingTime.setOnClickListener {
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        _binding =  FragmentAddTaskBinding.inflate(inflater, container, false)
+
+        binding.setStartingTime.setOnClickListener{
             openTimePickerForStartingTime()
         }
 
-        binding.endTime.setOnClickListener {
+        binding.endTime.setOnClickListener{
             openTimePickerForEndingTime()
         }
 
-        binding.submit.setOnClickListener {
+        binding.submit.setOnClickListener{
             val startingTimeText = binding.setStartingTime.text.toString()
-            val endingTimeText =   binding.endTime.text.toString()
-            val titleText =        binding.titleOfTaskInput.text.toString()
-            val titleInfo =        binding.taskInfoText.text.toString()
+            val endingTimeText = binding.endTime.text.toString()
+            val titleText = binding.titleOfTaskInput.text.toString()
+            val titleInfo = binding.taskInfoText.text.toString()
             var addTaskInfo = false
             var addTaskTime = false
 
 
             println("$startingTimeText  $endingTimeText $titleText $titleInfo")
 
-            if (titleInfo == "" || titleText == "") {
+            if(titleInfo=="" || titleText==""){
                 binding.taskInfoTextInputLayout.helperText = "*task title and description required"
                 binding.taskInfoTextInputLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED))
             } else {
@@ -71,7 +59,7 @@ class AddTask : Fragment() {
                 addTaskInfo = true
             }
 
-            if (startingTimeText == "Start Time" || endingTimeText == "End Time") {
+            if(startingTimeText == "Start Time" || endingTimeText == "End Time"){
                 binding.titleTextInputLayout.helperText = "*Start time and End time required"
                 binding.titleTextInputLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED))
             } else {
@@ -79,38 +67,33 @@ class AddTask : Fragment() {
                 val timeStart = sdf.parse(startingTimeText)
                 val timeEnd = sdf.parse(endingTimeText)
 
-                if (timeStart.after(timeEnd)) {
+                if(timeStart.after(timeEnd)){
                     binding.titleTextInputLayout.helperText = "*Start time cannot be after end time"
                     binding.titleTextInputLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED))
-                } else if (timeStart.equals(timeEnd)) {
-                    binding.titleTextInputLayout.helperText =
-                        "*Start time and end time cannot be the same"
+                } else if (timeStart.equals(timeEnd)){
+                    binding.titleTextInputLayout.helperText = "*Start time and end time cannot be the same"
                     binding.titleTextInputLayout.setHelperTextColor(ColorStateList.valueOf(Color.RED))
-                } else {
+                }
+                else {
                     binding.titleTextInputLayout.helperText = ""
                     addTaskTime = true
                 }
 
-                if (addTaskInfo && addTaskTime) {
+                if (addTaskInfo && addTaskTime){
                     // Create a new task with the entered data
+                    val task = Task.Builder()
+                        .name(titleText)
+                        .description(titleInfo)
+                        .startTime(timeStart)
+                        .endTime(timeEnd)
+                        .build()
 
-//                    SharedPrefs.add(task)
-                    if(id.isNotEmpty()){
-                        viewModel.updateTask(Task.Builder().id(id).name(titleText)
-                            .description(titleInfo).startTime(timeStart)
-                            .endTime(timeEnd).build());
-                    }else{
-                        val task =
-                            Task.Builder().id(UUID.randomUUID().toString()).name(titleText)
-                                .description(titleInfo).startTime(timeStart)
-                                .endTime(timeEnd).build()
-                        viewModel.addTask(task);
-                    }
-                    val snackbar =
-                        Snackbar.make(binding.root, "Task has been added", Snackbar.LENGTH_SHORT)
+                    // Add the built task to our singleton's list
+                    SharedPrefs.add(task)
+
+                    val snackbar = Snackbar.make(binding.root, "Task has been added", Snackbar.LENGTH_SHORT)
                     snackbar.show()
-                    parentFragmentManager.beginTransaction().replace(R.id.frame_layout, Home())
-                        .commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.frame_layout, Home()).commit()
                 }
             }
 
@@ -120,40 +103,43 @@ class AddTask : Fragment() {
     }
 
     private fun openTimePickerForEndingTime() {
-        val picker = MaterialTimePicker.Builder().setTimeFormat(TimeFormat.CLOCK_12H).setHour(12)
-            .setMinute(0).setTitleText("Start Time").build()
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Start Time")
+            .build()
         picker.show(childFragmentManager, "Tag")
 
-        picker.addOnPositiveButtonClickListener {
+        picker.addOnPositiveButtonClickListener{
             val hour = picker.hour
             val min = picker.minute
-            val convertTo12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(SimpleDateFormat(
-                    "HH:mm",
-                    Locale.getDefault()).parse("$hour:$min"))
+            val convertTo12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                .format(SimpleDateFormat("HH:mm", Locale.getDefault()).parse("$hour:$min"))
             binding.endTime.text = convertTo12Hour
         }
     }
 
-    private fun openTimePickerForStartingTime() {
+    private fun openTimePickerForStartingTime(){
 
-        val picker = MaterialTimePicker.Builder().setTimeFormat(TimeFormat.CLOCK_12H).setHour(12)
-            .setMinute(0).setTitleText("Start Time").build()
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_12H)
+            .setHour(12)
+            .setMinute(0)
+            .setTitleText("Start Time")
+            .build()
         picker.show(childFragmentManager, "Tag")
 
-        picker.addOnPositiveButtonClickListener {
+        picker.addOnPositiveButtonClickListener{
             val hour = picker.hour
             val min = picker.minute
-            val convertTo12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(
-                SimpleDateFormat(
-                    "HH:mm",
-                    Locale.getDefault()
-                ).parse("$hour:$min")
-            )
+            val convertTo12Hour = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                .format(SimpleDateFormat("HH:mm", Locale.getDefault()).parse("$hour:$min"))
             binding.setStartingTime.text = convertTo12Hour
         }
     }
 
-    override fun onDestroyView() {
+    override fun onDestroyView(){
         super.onDestroyView()
         _binding = null
     }
