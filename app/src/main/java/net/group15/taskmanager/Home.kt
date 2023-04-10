@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import net.group15.taskmanager.data.Task
+import net.group15.taskmanager.databinding.EmptyStateBinding
 import net.group15.taskmanager.databinding.FragmentHomeBinding
 import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
@@ -34,6 +35,16 @@ class Home : Fragment() {
             SharedPrefs.loadData()
             dataList.addAll(SharedPrefs.taskList)
             adapter.notifyDataSetChanged()
+
+            if(dataList.isEmpty()){
+                binding.lv.visibility = View.GONE
+                binding.emptyState.visibility = View.VISIBLE
+
+            } else {
+                binding.lv.visibility = View.VISIBLE
+                binding.emptyState.visibility = View.GONE
+            }
+
         }
 
         return binding.root
