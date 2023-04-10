@@ -8,20 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import net.group15.taskmanager.data.Task
-import net.group15.taskmanager.databinding.FragmentAddTaskBinding
 import net.group15.taskmanager.databinding.FragmentHomeBinding
 import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
-import kotlin.properties.Delegates
 
 class Home : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private val TAG: String = "TaskListActivity";
-
+    private val dataList = mutableListOf<Task>()
     private val viewModel by activityViewModels<MainViewModel>()
-
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -30,8 +26,15 @@ class Home : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
-        val adapter = RecyclerAdapter(SharedPrefs.taskList, viewModel)
+        val adapter = RecyclerAdapter(dataList, viewModel)
         binding.lv.adapter = adapter
+
+        viewModel.retrieveTasks.observe(viewLifecycleOwner) {
+            dataList.clear()
+            SharedPrefs.loadData()
+            dataList.addAll(SharedPrefs.taskList)
+            adapter.notifyDataSetChanged()
+        }
 
         return binding.root
     }

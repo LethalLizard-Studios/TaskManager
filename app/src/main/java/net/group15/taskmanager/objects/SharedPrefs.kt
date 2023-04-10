@@ -63,7 +63,7 @@ object SharedPrefs : AppCompatActivity() {
     }
 
     // Loads the users local data, only needs to be called at launch
-    private fun loadData() {
+    fun loadData() {
         viewModel.retrieveTasks.observe(owner){tasks ->
             val gson = Gson()
 
