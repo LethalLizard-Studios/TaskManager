@@ -19,6 +19,9 @@ class RecyclerAdapter(
 ) :
     RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
+
+    // Inflate the layout for each item in the RecyclerView.
+    // create a ViewHolder that will hold the views for the item.
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
         return ViewHolder(
             AdapterTaskListBinding.inflate(
@@ -29,6 +32,7 @@ class RecyclerAdapter(
         )
     }
 
+    // Binding data to the views in the ViewHolder.
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
 
         val task = taskList[position]
@@ -50,15 +54,18 @@ class RecyclerAdapter(
 
     }
 
+    // Return the total number of items in the data set.
     override fun getItemCount(): Int {
         return taskList.size
     }
 
+    // ViewHolder class holds references to the views in the item.
     inner class ViewHolder(val binding: AdapterTaskListBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
     }
 
+    // Simplify the process of obtaining a LayoutInflater instance when inflating views.
     private fun View.layoutLayoutInflater(): LayoutInflater {
         return LayoutInflater.from(this.context);
     }
