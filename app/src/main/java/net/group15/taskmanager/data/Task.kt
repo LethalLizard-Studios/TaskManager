@@ -4,8 +4,10 @@ import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 /**
- * A Constructor for tasks.
- * Author: Leland Carter
+ * A constructor for tasks
+ * @author Leland Carter
+ * @version 1.0
+ * @since 2023-04-11
  */
 
 class Task private constructor(

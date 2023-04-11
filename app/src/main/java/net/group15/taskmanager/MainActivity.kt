@@ -1,5 +1,4 @@
 package net.group15.taskmanager
-
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
@@ -7,10 +6,12 @@ import net.group15.taskmanager.databinding.ActivityMainBinding
 import net.group15.taskmanager.datastore.DataStoreManager
 import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
-
-
-// Main task manager screen
-// All tasks will be viewed here
+/**
+ * This is the main activity class that handles all the views and switching between screens
+ * @author Ichiro Banskota
+ * @version 1.0
+ * @since 2023-04-11
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private lateinit var dataStoreManager: DataStoreManager
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity() {
 
         SharedPrefs.initialize(viewModel, dataStoreManager, this)
 
+        // This is the method that handles switching between screens
+        // Based on the button clicked in the bottom nav bar the view is adjusted accordly
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.home_nav_button -> supportFragmentManager.beginTransaction().replace(R.id.frame_layout, Home()).commit()

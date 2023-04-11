@@ -13,11 +13,12 @@ import kotlinx.coroutines.flow.map
 import net.group15.taskmanager.data.Task
 import net.group15.taskmanager.objects.SharedPrefs
 import java.io.IOException
-
 /**
- * Author: Leland Carter
+ * Description
+ * @author Leland Carter
+ * @version 1.0
+ * @since 2023-04-11
  */
-
 class DataStoreManager(context: Context) {
     private val Context.dataStore : DataStore<Preferences> by preferencesDataStore(name="TASK_DATA")
     private val dataStore = context.dataStore

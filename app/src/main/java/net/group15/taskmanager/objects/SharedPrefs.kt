@@ -8,12 +8,12 @@ import net.group15.taskmanager.Home
 import net.group15.taskmanager.data.Task
 import net.group15.taskmanager.datastore.DataStoreManager
 import net.group15.taskmanager.datastore.MainViewModel
-
 /**
  * Singleton object used to save and load task data locally.
- * Author: Leland Carter
+ * @author Leland Carter & Hanwen Shi
+ * @version 1.0
+ * @since 2023-04-11
  */
-
 object SharedPrefs : AppCompatActivity() {
     var taskList = mutableListOf<Task>()
 

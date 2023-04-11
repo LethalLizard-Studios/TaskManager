@@ -2,7 +2,12 @@ package net.group15.taskmanager.objects
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-
+/**
+ * Handles the swiping functionality
+ * @author Ichiro Banskota
+ * @version 1.0
+ * @since 2023-04-11
+ */
 abstract class SwipeToDeleteCallBack : ItemTouchHelper.Callback() {
     override fun getMovementFlags(
         recyclerView: RecyclerView,
@@ -20,11 +25,4 @@ abstract class SwipeToDeleteCallBack : ItemTouchHelper.Callback() {
     ): Boolean {
         return false
     }
-
-
-
-
-
-
-
 }
