@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import net.group15.taskmanager.data.Task
-import net.group15.taskmanager.databinding.EmptyStateBinding
 import net.group15.taskmanager.databinding.FragmentHomeBinding
 import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
