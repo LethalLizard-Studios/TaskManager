@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import net.group15.taskmanager.data.Task
 import net.group15.taskmanager.databinding.FragmentHomeBinding
 import net.group15.taskmanager.datastore.MainViewModel
 import net.group15.taskmanager.objects.SharedPrefs
+import net.group15.taskmanager.objects.SharedPrefs.taskList
+import net.group15.taskmanager.objects.SwipeToDeleteCallBack
 
 class Home : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -24,10 +28,13 @@ class Home : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
         val adapter = RecyclerAdapter(dataList, viewModel)
         binding.lv.adapter = adapter
+
+
 
         viewModel.retrieveTasks.observe(viewLifecycleOwner) {
             dataList.clear()
@@ -43,6 +50,14 @@ class Home : Fragment() {
                 binding.lv.visibility = View.VISIBLE
                 binding.emptyState.visibility = View.GONE
             }
+
+            val swipeToDeleteCallBack = object :  SwipeToDeleteCallBack() {
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    SharedPrefs.remove(viewHolder.adapterPosition)
+                }
+            }
+            val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
+            itemTouchHelper.attachToRecyclerView(binding.lv);
 
         }
 
