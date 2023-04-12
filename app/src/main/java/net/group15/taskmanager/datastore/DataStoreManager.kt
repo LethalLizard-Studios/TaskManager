@@ -10,8 +10,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import net.group15.taskmanager.data.Task
-import net.group15.taskmanager.objects.SharedPrefs
 import java.io.IOException
 /**
  * Description

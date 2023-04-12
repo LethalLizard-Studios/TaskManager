@@ -4,13 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import net.group15.taskmanager.Home
 import net.group15.taskmanager.data.Task
 import net.group15.taskmanager.datastore.DataStoreManager
 import net.group15.taskmanager.datastore.MainViewModel
 /**
  * Singleton object used to save and load task data locally.
- * @author Leland Carter & Hanwen Shi
+ * @author Leland Carter
  * @version 1.0
  * @since 2023-04-11
  */
@@ -21,11 +20,15 @@ object SharedPrefs : AppCompatActivity() {
     private lateinit var dataStoreManager: DataStoreManager
     private lateinit var owner: LifecycleOwner
 
+    private var hasInitialized = false
+
     fun initialize(viewModel: MainViewModel, dataStoreManager: DataStoreManager,
                    owner: LifecycleOwner) {
         this.viewModel = viewModel
         this.dataStoreManager = dataStoreManager
         this.owner = owner
+
+        hasInitialized = true
 
         loadData()
     }
@@ -53,26 +56,30 @@ object SharedPrefs : AppCompatActivity() {
 
     // Saves the users data locally
     private fun saveData() {
-        // Uses Gson to convert our list into Json
-        val gson = Gson()
-        val json = gson.toJson(taskList)
+        if (hasInitialized) {
+            // Uses Gson to convert our list into Json
+            val gson = Gson()
+            val json = gson.toJson(taskList)
 
-        viewModel.storeTasks(json)
+            viewModel.storeTasks(json)
 
-        println("Saving ${taskList.size}: $json")
+            println("Saving ${taskList.size}: $json")
+        }
     }
 
     // Loads the users local data, only needs to be called at launch
     fun loadData() {
-        viewModel.retrieveTasks.observe(owner){tasks ->
-            val gson = Gson()
+        if (hasInitialized) {
+            viewModel.retrieveTasks.observe(owner){tasks ->
+                val gson = Gson()
 
-            val listType = object: TypeToken<MutableList<Task>>() {
-            }.type
+                val listType = object: TypeToken<MutableList<Task>>() {
+                }.type
 
-            if (tasks.isNotEmpty() && taskList.isEmpty()) {
-                taskList = gson.fromJson(tasks, listType)
-                println("Loading ${taskList.size}: $tasks")
+                if (tasks.isNotEmpty() && taskList.isEmpty()) {
+                    taskList = gson.fromJson(tasks, listType)
+                    println("Loading ${taskList.size}: $tasks")
+                }
             }
         }
     }
