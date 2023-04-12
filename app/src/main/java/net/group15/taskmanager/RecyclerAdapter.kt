@@ -40,10 +40,6 @@ class RecyclerAdapter(
             tvEnd.text = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(task.endingTime)
             tvDescription.text = task.description
             val task = taskList[position]
-            // TODO: Add back change live date
-            /*root.setOnClickListener {
-                viewModel.changeLiveDate.value = task;
-            }*/
         }
     }
 
